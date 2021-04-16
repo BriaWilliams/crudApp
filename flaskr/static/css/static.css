@@ -1,3 +1,14 @@
 .jumbotron {
     background-color: #D3D1D2
 }
+
+.input {
+  margin-bottom: 25px;
+}
+
+#deletemodal{
+  position:fixed; 
+  vertical-align: middle;
+  margin-top: -15px;
+  top: 35%;
+}
