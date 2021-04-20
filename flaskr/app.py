@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -24,7 +24,9 @@ class Data(db.Model):
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    employeeData = Data.query.all()
+
+    return render_template("index.html", employees = employeeData)
 
 @app.route('/insert', methods = ['POST'])
 def insert():
@@ -39,8 +41,33 @@ def insert():
         db.session.add(formData)
         db.session.commit()
 
+        flash("Employee Added Successfully")
+
+        return redirect(url_for('index')) #redirects back to index page
+
+@app.route('/update', methods = ['GET', 'POST'])
+def update():
+
+    if request.method == 'POST':
+        employeeData = Data.query.get(request.form.get('id'))
+
+        employeeData.name = request.form['name']
+        employeeData.email = request.form['email']
+        employeeData.phone = request.form['phone']
+
+        db.session.commit()
+        flash("Employee Information Updated Successfully")
+
         return redirect(url_for('index'))
 
+@app.route('/delete/<id>/', methods =['GET', 'POST'])
+def delete(id):
+    employeeData = Data.query.get(id)
+    db.session.delete(employeeData)
+    db.session.commit()
+    flash("Employee Deleted Successfully")
+
+    return redirect(url_for('index'))
 
 
 if __name__  == "__main__":
