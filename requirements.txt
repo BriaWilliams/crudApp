@@ -2,3 +2,4 @@ Flask==1.1.2
 Werkzeug==1.0.1
 Flask-SQLAlchemy==2.4.4
 Gunicorn==20.0.4
+SQLAlchemy<1.4
